@@ -26,10 +26,24 @@ A real-time dashboard for monitoring US macroeconomic jobs data, providing insig
 
 ### Installation
 
-```bash
-# Install dependencies
-npm install
-```
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Get a free FRED API key:
+   - Visit [https://fred.stlouisfed.org/docs/api/api_key.html](https://fred.stlouisfed.org/docs/api/api_key.html)
+   - Request an API key (instant approval)
+
+3. Create a `.env` file in the project root:
+   ```bash
+   cp .env.example .env
+   ```
+
+4. Add your API key to `.env`:
+   ```
+   VITE_FRED_API_KEY=your_actual_api_key_here
+   ```
 
 ### Development
 
@@ -54,6 +68,15 @@ npm run preview
 
 ### Deploy to Vercel
 
+**Option 1: Via GitHub (Recommended)**
+1. Push your code to GitHub
+2. Go to [vercel.com](https://vercel.com) and import your repository
+3. Add environment variable:
+   - Go to Project Settings → Environment Variables
+   - Add `VITE_FRED_API_KEY` with your API key value
+4. Deploy! Your dashboard will auto-deploy on every push
+
+**Option 2: Via CLI**
 1. Install Vercel CLI:
    ```bash
    npm install -g vercel
@@ -64,16 +87,16 @@ npm run preview
    vercel
    ```
 
-3. Follow the prompts to link your project
+3. Add your API key as an environment variable:
+   ```bash
+   vercel env add VITE_FRED_API_KEY
+   ```
+   Enter your FRED API key when prompted
 
-4. For subsequent deployments:
+4. Redeploy:
    ```bash
    vercel --prod
    ```
-
-Alternatively, you can:
-- Push to GitHub and connect the repository to Vercel through their web interface
-- The dashboard will auto-deploy on every push to main
 
 ### Deploy to Netlify
 

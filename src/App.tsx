@@ -5,7 +5,7 @@ import { fetchFredSeries, calculateMetricData, FRED_SERIES } from './services/fr
 
 function App() {
   // Fetch unemployment rate
-  const { data: unemploymentData, isLoading: unemploymentLoading } = useQuery({
+  const { data: unemploymentData, isLoading: unemploymentLoading, error: unemploymentError } = useQuery({
     queryKey: ['unemployment'],
     queryFn: () => fetchFredSeries({ seriesId: FRED_SERIES.UNEMPLOYMENT_RATE }),
     staleTime: 1000 * 60 * 60, // 1 hour
@@ -73,6 +73,25 @@ function App() {
           </p>
         </div>
       </header>
+
+      {/* API Key Error Banner */}
+      {unemploymentError && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <h3 className="text-red-900 font-semibold mb-2">FRED API Key Required</h3>
+            <p className="text-red-800 text-sm mb-3">
+              To use this dashboard, you need a free FRED API key.
+            </p>
+            <ol className="text-red-800 text-sm space-y-1 mb-3 list-decimal list-inside">
+              <li>Get a free API key at: <a href="https://fred.stlouisfed.org/docs/api/api_key.html" target="_blank" rel="noopener noreferrer" className="underline font-semibold">fred.stlouisfed.org/docs/api/api_key.html</a></li>
+              <li>Create a <code className="bg-red-100 px-1 rounded">.env</code> file in the project root</li>
+              <li>Add: <code className="bg-red-100 px-1 rounded">VITE_FRED_API_KEY=your_api_key_here</code></li>
+              <li>Restart the dev server</li>
+            </ol>
+            <p className="text-red-700 text-xs">Error: {(unemploymentError as Error).message}</p>
+          </div>
+        </div>
+      )}
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Key Metrics Overview */}

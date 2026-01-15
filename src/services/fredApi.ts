@@ -2,8 +2,9 @@ import { FredSeriesResponse, SeriesData, MetricData } from '../types/fred';
 
 const FRED_API_BASE = 'https://api.stlouisfed.org/fred';
 
-// FRED API is free and doesn't require authentication for basic use
-// For production, you might want to get a free API key from https://fred.stlouisfed.org/docs/api/api_key.html
+// Get a free API key from: https://fred.stlouisfed.org/docs/api/api_key.html
+// For development, you can use this demo key (limited requests)
+const FRED_API_KEY = import.meta.env.VITE_FRED_API_KEY || 'demo_key_get_your_own';
 
 interface FetchSeriesParams {
   seriesId: string;
@@ -18,6 +19,7 @@ export async function fetchFredSeries({
 }: FetchSeriesParams): Promise<SeriesData[]> {
   const params = new URLSearchParams({
     series_id: seriesId,
+    api_key: FRED_API_KEY,
     file_type: 'json',
   });
 
@@ -28,10 +30,16 @@ export async function fetchFredSeries({
 
   const response = await fetch(url);
   if (!response.ok) {
-    throw new Error(`FRED API error: ${response.statusText}`);
+    const errorText = await response.text();
+    console.error('FRED API error:', response.status, errorText);
+    throw new Error(`FRED API error: ${response.statusText}. Please check your API key.`);
   }
 
   const data: FredSeriesResponse = await response.json();
+
+  if (!data.observations) {
+    throw new Error('Invalid FRED API response');
+  }
 
   return data.observations
     .filter((obs) => obs.value !== '.')
