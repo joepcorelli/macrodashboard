@@ -1,6 +1,6 @@
-import { FredSeriesResponse, SeriesData, MetricData } from '../types/fred';
+import type { FredSeriesResponse, SeriesData, MetricData } from '../types/fred';
 
-const FRED_API_BASE = 'https://api.stlouisfed.org/fred';
+const FRED_API_BASE = '/api/fred';
 
 // Get a free API key from: https://fred.stlouisfed.org/docs/api/api_key.html
 // For development, you can use this demo key (limited requests)

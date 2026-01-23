@@ -8,7 +8,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from 'recharts';
-import { SeriesData } from '../types/fred';
+import type { SeriesData } from '../types/fred';
 
 interface TimeSeriesChartProps {
   data: SeriesData[];
@@ -38,7 +38,8 @@ export default function TimeSeriesChart({
     }
   };
 
-  const formatTooltip = (value: number) => {
+  const formatTooltip = (value: number | undefined) => {
+    if (value === undefined) return '';
     switch (yAxisFormat) {
       case 'percent':
         return `${value.toFixed(1)}%`;
